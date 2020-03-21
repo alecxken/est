@@ -33,22 +33,24 @@ class LoginController extends Controller
      $password = $request->input('password');
 
 
-    // $user = User::where('username', $user)->first();
-    //              if(!empty($user))
-    //                 {
-    //                   Auth::loginUsingId($user->id);
-    //                  return redirect()->intended('/home');
-    //             }
-    //         else
-    //             {
-    //               $users = new User();
-    //               $users->username = $user;
-    //               $users->email = $email;
-    //               $users->save();
-    //                Auth::loginUsingId($users->id);
-    //                return redirect('home')->with('danger','Kindly Update Your Profile !!!');
-    //                 // return back()->with('error','Kindly Contact Your ICT department');
-    //              }
+    $user = User::where('username', $user)->first();
+                 if(!empty($user))
+                    {
+                      Auth::loginUsingId($user->id);
+                     return redirect()->intended('/home');
+                }
+            else
+                {
+                  $users = new User();
+                  $users->username = $request->input('email');
+                  $users->name =$request->input('email');
+                    $users->email = $request->input('email').'@ecobank.com';
+                    $users->password = Hash::make(12345678);
+                  $users->save();
+                   Auth::loginUsingId($users->id);
+                   return redirect('home')->with('danger','Kindly Update Your Profile !!!');
+                    // return back()->with('error','Kindly Contact Your ICT department');
+                 }
 
       if(empty($user) || empty($password)) return back()->with('danger','Kindly input all credentials');
        $ldap_host = "10.32.1.18";
